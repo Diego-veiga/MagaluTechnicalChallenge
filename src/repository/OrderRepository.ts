@@ -3,8 +3,15 @@ import ordersSchema from 'src/database/schemas/orders.schema';
 import IOrderRepository from 'src/interface/IOrderRepository';
 
 export default class OrderRepository implements IOrderRepository {
-  async save(order: Order): Promise<void> {
-    await ordersSchema.create(order);
+  async save(orders: Order[]): Promise<void> {
+    const bulkOps = orders.map(orderData => ({
+      updateOne: {
+        filter: { order_id: orderData.order_id },
+        update: { $set: orderData },
+        upsert: true,
+      },
+    }));
+    await ordersSchema.bulkWrite(bulkOps);
   }
 
   async getById(id: number): Promise<Order | null> {

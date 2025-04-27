@@ -16,7 +16,7 @@ export default class OrderService implements IOrderService {
     private readonly orderRepository: IOrderRepository,
   ) {}
   async processOrder(fileName: string): Promise<void> {
-    //const orders: Order[] = [];
+    const orders: Order[] = [];
     const lines = fs
       .readFileSync(
         path.resolve(__dirname, '..', '..', `uploads/${fileName}`),
@@ -33,7 +33,7 @@ export default class OrderService implements IOrderService {
         date: this.formatDate(line.substring(87, 95).trim()),
       };
 
-      const order = await this.orderRepository.getById(orderFile.order_id);
+      const order = await orders.find(o => o.order_id === orderFile.order_id);
 
       if (!order) {
         const client: Client = {
@@ -53,13 +53,14 @@ export default class OrderService implements IOrderService {
           client: client,
           products: [],
         };
-
         order.products?.push(product);
-        await this.orderRepository.save(order);
+
+        orders.push(order);
       } else {
         const product = order.products.find(
           x => x.product_id === orderFile.product_id,
         );
+
         if (!product) {
           const newProduct: Product = {
             product_id: orderFile.product_id,
@@ -67,13 +68,11 @@ export default class OrderService implements IOrderService {
           };
 
           order.products.push(newProduct);
-          await this.orderRepository.update(order.order_id, {
-            products: order.products,
-            total: order.total,
-          });
         }
       }
     }
+
+    await this.orderRepository.save(orders);
   }
 
   formatDate(yyyymmdd: string): string {
