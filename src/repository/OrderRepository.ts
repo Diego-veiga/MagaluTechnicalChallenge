@@ -37,7 +37,7 @@ export default class OrderRepository implements IOrderRepository {
       {
         $group: {
           _id: '$client.user_id',
-          user_id: { $first: '$client.user_id' }, // já traz o user_id separado
+          user_id: { $first: '$client.user_id' },
           name: { $first: '$client.name' },
           orders: {
             $push: {
