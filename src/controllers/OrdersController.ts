@@ -13,9 +13,11 @@ export default class OrderController {
 
     const orderService = container.resolve(OrderService);
 
-    const users = await orderService.processOrder(request.file.filename);
+    await orderService.processOrder(request.file.filename);
 
-    return response.json({ data: users }).status(200);
+    return response
+      .json({ message: 'file processed successfully' })
+      .status(200);
   }
 
   async getOrderByParams(
@@ -23,6 +25,7 @@ export default class OrderController {
     response: Response,
   ): Promise<Response> {
     const { orderId, startDate, endDate, userId } = request.query;
+
     const params: FiltersOrder = {
       orderId: Number(orderId),
       startDate: startDate as string,
