@@ -8,6 +8,7 @@ import Client from '@models/Client';
 import Order from '@models/Order';
 import Product from '@models/Product';
 import IOrderRepository from 'src/interface/IOrderRepository';
+import FiltersOrder from '@models/FilterOrder';
 
 @injectable()
 export default class OrderService implements IOrderService {
@@ -15,6 +16,7 @@ export default class OrderService implements IOrderService {
     @inject('OrderRepository')
     private readonly orderRepository: IOrderRepository,
   ) {}
+
   async processOrder(fileName: string): Promise<void> {
     const orders: Order[] = [];
     const lines = fs
@@ -80,5 +82,10 @@ export default class OrderService implements IOrderService {
       4,
       6,
     )}-${yyyymmdd.substring(6, 8)}`;
+  }
+
+  async getOrderByParams(filters: FiltersOrder): Promise<Order[]> {
+    console.log('********************************SERVICE getOrderByParams');
+    return await this.orderRepository.getByParams(filters);
   }
 }

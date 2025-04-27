@@ -7,6 +7,12 @@ const orderRouter = Router();
 const upload = multer(multerconfig);
 
 const orderController = new OrderController();
-orderRouter.post('/', upload.single('file'), orderController.processOrder);
+orderRouter.post(
+  '/processFile',
+  upload.single('file'),
+  orderController.processOrder,
+);
+
+orderRouter.get('/', orderController.getOrderByParams);
 
 export default orderRouter;
