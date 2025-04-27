@@ -37,12 +37,13 @@ export default class OrderRepository implements IOrderRepository {
       {
         $group: {
           _id: '$client.user_id',
+          user_id: { $first: '$client.user_id' }, // já traz o user_id separado
           name: { $first: '$client.name' },
           orders: {
             $push: {
               order_id: '$order_id',
               total: '$total',
-              date: '$client.date',
+              date: '$date',
               products: '$products',
             },
           },
@@ -51,10 +52,9 @@ export default class OrderRepository implements IOrderRepository {
       {
         $project: {
           _id: 0,
-          user_id: '$_id',
+          user_id: 1,
           name: 1,
           orders: 1,
-          products: 1,
         },
       },
     ]);

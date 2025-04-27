@@ -85,7 +85,6 @@ export default class OrderService implements IOrderService {
   }
 
   async getOrderByParams(filters: FiltersOrder): Promise<Order[]> {
-    console.log('********************************SERVICE getOrderByParams');
     return await this.orderRepository.getByParams(filters);
   }
 }

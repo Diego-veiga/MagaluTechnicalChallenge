@@ -30,12 +30,10 @@ export default class OrderController {
       userId: userId ? Number(userId) : undefined,
     };
 
-    console.log('*******************params', params);
-
     const orderService = container.resolve(OrderService);
 
     const orders = await orderService.getOrderByParams(params);
 
-    return response.json({ data: orders }).status(200);
+    return response.json(orders).status(200);
   }
 }
