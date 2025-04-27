@@ -6,7 +6,7 @@ import { errors } from 'celebrate';
 import router from '@routers/index';
 import { AppError } from '@models/AppError';
 import './container';
-
+import { connectDatabase } from './database/db';
 
 const app = express();
 
@@ -23,19 +23,19 @@ app.use(
         message: error.message,
       });
     }
-   console.log('**************************************Error', error)
     return response.status(500).json({
       status: 'error',
       message: 'Internal server error',
     });
   },
 );
+
+connectDatabase();
 app.listen(3333, () => {
   console.log('server started on port 3333');
 });
 
 export default app;
-
 
 // import express from 'express';
 // import cors from 'cors';

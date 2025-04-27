@@ -12,10 +12,8 @@ export default class OrderController {
 
     const orderService = container.resolve(OrderService);
 
-    orderService.processOrder(request.file.filename);
+    const users = orderService.processOrder(request.file.filename);
 
-    return response
-      .json({ message: 'Vamos processar o arquivo aqui' })
-      .status(200);
+    return response.json({ data: users }).status(200);
   }
 }

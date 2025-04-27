@@ -1,8 +1,8 @@
 export default class OrderFile {
-  idUsuario: number;
-  nome: string;
-  idPedido: number;
-  idProduto: number;
-  valorProduto: number;
-  dataCompra: string;
+  user_id: number;
+  name: string;
+  order_id: number;
+  product_id: number;
+  value: number;
+  date: string;
 }
