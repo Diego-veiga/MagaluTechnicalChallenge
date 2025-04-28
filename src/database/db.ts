@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-const connectionString =
-  'mongodb+srv://diegoroberto27:SkjSePaEyxyIsGIS@testetechmagalu.lzxtyki.mongodb.net/?retryWrites=true&w=majority&appName=TesteTechMagalu';
 const options = {
   autoIndex: false, // Don't build indexes
   maxPoolSize: 10, // Maintain up to 10 socket connections
@@ -12,7 +10,7 @@ const options = {
 
 export const connectDatabase = () =>
   mongoose
-    .connect(connectionString, options)
+    .connect(process.env.MONGO_URL!, options)
     .then(res => {
       if (res) {
         console.log(`Database connection succeffully to testetechmagalu`);
