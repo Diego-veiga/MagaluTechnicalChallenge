@@ -20,9 +20,8 @@ export default class OrderService implements IOrderService {
   async processOrder(fileName: string): Promise<void> {
     const orders: Order[] = [];
     const orderLines = await this.readOrderFile(fileName);
-
     for (const orderLine of orderLines) {
-      if (!orderLine.trim()) continue;
+      if (!orderLine.trim() || orderLine.length < 95) continue;
       const orderFile: OrderFile = this.parseOrderLine(orderLine);
 
       const order = orders.find(o => o.order_id === orderFile.order_id);
@@ -61,7 +60,7 @@ export default class OrderService implements IOrderService {
     return await this.orderRepository.getByParams(filters);
   }
 
-  private async readOrderFile(fileName: string): Promise<string[]> {
+  public async readOrderFile(fileName: string): Promise<string[]> {
     const filePath = path.resolve(__dirname, '..', '..', `uploads/${fileName}`);
     const fileContent = await fs.readFile(filePath, 'utf-8');
     return fileContent.split('\n');
@@ -76,7 +75,7 @@ export default class OrderService implements IOrderService {
       products: [],
     };
 
-    order.products?.push(
+    order.products.push(
       this.createProduct(orderFile.product_id, orderFile.value),
     );
     return order;

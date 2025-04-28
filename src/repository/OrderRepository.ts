@@ -12,11 +12,8 @@ export default class OrderRepository implements IOrderRepository {
         upsert: true,
       },
     }));
-    await ordersSchema.bulkWrite(bulkOps);
-  }
 
-  async getById(id: number): Promise<Order | null> {
-    return await ordersSchema.findOne({ order_id: id });
+    await ordersSchema.bulkWrite(bulkOps);
   }
 
   async getByParams(params: FiltersOrder): Promise<Order[]> {
