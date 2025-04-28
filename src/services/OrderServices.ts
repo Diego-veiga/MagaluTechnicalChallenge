@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import IOrderService from 'src/interface/IOrderService';
+import IOrderService from '@interfaces/IOrderService';
 import { inject, injectable } from 'tsyringe';
 import path from 'path';
 import fs from 'fs/promises';
@@ -7,7 +7,7 @@ import OrderFile from '@models/OrderFile';
 import Client from '@models/Client';
 import Order from '@models/Order';
 import Product from '@models/Product';
-import IOrderRepository from 'src/interface/IOrderRepository';
+import IOrderRepository from '@interfaces/IOrderRepository';
 import FiltersOrder from '@models/FilterOrder';
 
 @injectable()

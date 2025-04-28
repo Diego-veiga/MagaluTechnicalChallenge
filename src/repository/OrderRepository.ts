@@ -1,7 +1,7 @@
 import FiltersOrder from '@models/FilterOrder';
 import Order from '@models/Order';
-import ordersSchema from 'src/database/schemas/orders.schema';
-import IOrderRepository from 'src/interface/IOrderRepository';
+import ordersSchema from '@schemas/orders.schema';
+import IOrderRepository from '@interfaces/IOrderRepository';
 
 export default class OrderRepository implements IOrderRepository {
   async save(orders: Order[]): Promise<void> {

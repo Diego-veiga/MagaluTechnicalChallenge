@@ -9,7 +9,12 @@
     "paths": {
       "src/*": ["src/*"],
       "@models/*": ["src/models/*"],
-      "@routers/*": ["src/router/*"]
+      "@routers/*": ["src/router/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@services/*": ["src/services/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@schemas/*": ["src/database/schemas/*"],
+      "@config/*": ["src/config/*"]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

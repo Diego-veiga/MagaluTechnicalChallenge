@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Request, Response } from 'express';
-import OrderService from 'src/services/OrderServices';
+import OrderService from '@services/OrderServices';
 import { container, injectable } from 'tsyringe';
 import FiltersOrder from '@models/FilterOrder';
 
