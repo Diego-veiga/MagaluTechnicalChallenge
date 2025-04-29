@@ -12,6 +12,7 @@ O desafio consiste em integrar dois sistemas, realizando a transformação de um
 
 - [Pré-requisitos](#requisito)
 - [Execução do projeto](#execucao)
+- [Endpoints da API](#endpoints)
 - [Execução dos testes unitários](#testes)
 - [Tecnologias](#tecnologias)
 - [Autor](#autor)
@@ -56,10 +57,54 @@ npm run dev
 
 A aplicação estará disponível na porta 3000, através do link `http://localhost:3000`
 
+<h2 id="endpoints">Endpoints da API</h2>
+
+#### POST `/orders/processFile`
+
+Processa um arquivo de pedidos desnormalizado enviado via multipart/form-data.
+
+**Requisição:**
+
+- Content-Type: multipart/form-data
+
+- Campo do arquivo: file (arquivo .txt contendo os pedidos)
+
+**Resposta:**
+
+- 200 OK: Arquivo processado com sucesso.
+
+- 400 Bad Request: Arquivo inválido ou erro no processamento.
+
+#### GET `/orders`
+
+Retorna os pedidos processados, com possibilidade de filtros via query string.
+
+Parâmetros (query string):
+
+- customerId: (opcional) filtra pedidos por ID do cliente
+
+- orderId: (opcional) filtra por ID do pedido
+
+**Exemplo de requisição:**
+
+```bash
+GET /orders?customerId=123&orderId=456
+
+```
+
+**Resposta:**
+
+- 200 OK: Lista de pedidos encontrados.
+
+- 204 No Content: Nenhum pedido encontrado.
+
+- 500 Internal Server Error: Erro ao buscar os dados.
+
 <h2 id="testes">Execução dos Testes Unitários</h2>
  O projeto conta com testes unitários implementados para garantir a qualidade e a confiabilidade do código.
 
 #### Rodar os testes
+
 Instale as dependências (caso ainda não tenha instalado):
 
 ```bash
@@ -68,13 +113,13 @@ npm i
 
 Para executar os testes, utilize o comando:
 
-
 ```bash
 npm run test
 ```
 
 #### Verificar cobertura de testes :
-Para executar os testes e  verificar a cobertura , utilize o comando:
+
+Para executar os testes e verificar a cobertura , utilize o comando:
 
 ```bash
 npm run test:coverage
