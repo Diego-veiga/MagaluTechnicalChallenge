@@ -27,27 +27,15 @@ export default class OrderService implements IOrderService {
       const order = orders.find(o => o.order_id === orderFile.order_id);
 
       if (!order) {
-        const order = this.createOrder(orderFile);
+        const newOrder = this.createOrder(orderFile);
 
-        orders.push(order);
+        orders.push(newOrder);
       } else {
-        const product = order.products.find(
-          x => x.product_id === orderFile.product_id,
+        this.addOrUpdateProductInOrder(
+          order,
+          orderFile.product_id,
+          orderFile.value,
         );
-
-        if (!product) {
-          const newProduct = this.createProduct(
-            orderFile.product_id,
-            orderFile.value,
-          );
-
-          order.products.push(newProduct);
-          order.total = parseFloat(
-            order.products
-              .reduce((total, product) => total + product.value, 0)
-              .toFixed(2),
-          );
-        }
       }
     }
 
@@ -55,6 +43,26 @@ export default class OrderService implements IOrderService {
     await this.removeFile(fileName);
   }
 
+  private addOrUpdateProductInOrder(
+    order: Order,
+    productId: number,
+    value: number,
+  ): void {
+    const existingProduct = order.products.find(
+      p => p.product_id === productId,
+    );
+
+    if (!existingProduct) {
+      const newProduct = this.createProduct(productId, value);
+      order.products.push(newProduct);
+
+      order.total = parseFloat(
+        order.products
+          .reduce((total, product) => total + product.value, 0)
+          .toFixed(2),
+      );
+    }
+  }
   formatDate(yyyymmdd: string): string {
     return `${yyyymmdd.substring(0, 4)}-${yyyymmdd.substring(
       4,
