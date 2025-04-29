@@ -42,11 +42,17 @@ export default class OrderService implements IOrderService {
           );
 
           order.products.push(newProduct);
+          order.total = parseFloat(
+            order.products
+              .reduce((total, product) => total + product.value, 0)
+              .toFixed(2),
+          );
         }
       }
     }
 
     await this.orderRepository.save(orders);
+    await this.removeFile(fileName);
   }
 
   formatDate(yyyymmdd: string): string {
@@ -64,6 +70,10 @@ export default class OrderService implements IOrderService {
     const filePath = path.resolve(__dirname, '..', '..', `uploads/${fileName}`);
     const fileContent = await fs.readFile(filePath, 'utf-8');
     return fileContent.split('\n');
+  }
+  private async removeFile(fileName: string): Promise<void> {
+    const filePath = path.resolve(__dirname, '..', '..', `uploads/${fileName}`);
+    await fs.unlink(filePath);
   }
 
   private createOrder(orderFile: OrderFile): Order {
