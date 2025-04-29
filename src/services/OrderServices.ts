@@ -71,7 +71,8 @@ export default class OrderService implements IOrderService {
     const fileContent = await fs.readFile(filePath, 'utf-8');
     return fileContent.split('\n');
   }
-  private async removeFile(fileName: string): Promise<void> {
+
+  public async removeFile(fileName: string): Promise<void> {
     const filePath = path.resolve(__dirname, '..', '..', `uploads/${fileName}`);
     await fs.unlink(filePath);
   }
