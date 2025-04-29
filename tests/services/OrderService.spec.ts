@@ -74,38 +74,22 @@ const orderToSaveMock = [
   {
     order_id: 753,
     date: '2021-03-08',
-    total: 1836.74,
-    client: {
-      user_id: 70,
-      name: 'Palmer Prosacco',
-    },
+    total: 2455.53,
+    client: { user_id: 70, name: 'Palmer Prosacco' },
     products: [
-      {
-        product_id: 3,
-        value: 1836.74,
-      },
-      {
-        product_id: 4,
-        value: 618.79,
-      },
+      { product_id: 3, value: 1836.74 },
+      { product_id: 4, value: 618.79 },
     ],
   },
   {
     order_id: 755,
     date: '2021-03-08',
     total: 618.79,
-    client: {
-      user_id: 71,
-      name: 'Palmer Prosacco',
-    },
-    products: [
-      {
-        product_id: 4,
-        value: 618.79,
-      },
-    ],
+    client: { user_id: 71, name: 'Palmer Prosacco' },
+    products: [{ product_id: 4, value: 618.79 }],
   },
 ];
+
 const ordersToSaveWithEmptyLine = [
   {
     order_id: 753,
@@ -143,23 +127,15 @@ const orderToSaveWithLessThan45Lines = [
   {
     order_id: 753,
     date: '2021-03-08',
-    total: 1836.74,
-    client: {
-      user_id: 70,
-      name: 'Palmer Prosacco',
-    },
+    total: 2455.53,
+    client: { user_id: 70, name: 'Palmer Prosacco' },
     products: [
-      {
-        product_id: 3,
-        value: 1836.74,
-      },
-      {
-        product_id: 4,
-        value: 618.79,
-      },
+      { product_id: 3, value: 1836.74 },
+      { product_id: 4, value: 618.79 },
     ],
   },
 ];
+
 describe('Order service tests', () => {
   it('should process order when file is provided ', async () => {
     const orderService = new OrderService(orderRepositoryMock);
@@ -167,6 +143,8 @@ describe('Order service tests', () => {
     jest
       .spyOn(orderService, 'readOrderFile')
       .mockResolvedValue(readFileModelMock);
+
+    jest.spyOn(orderService, 'removeFile').mockResolvedValue({} as any);
 
     await orderService.processOrder('test.txt');
 
@@ -180,6 +158,8 @@ describe('Order service tests', () => {
     jest
       .spyOn(orderService, 'readOrderFile')
       .mockResolvedValue(readFileWithEmptyLineMock);
+
+    jest.spyOn(orderService, 'removeFile').mockResolvedValue({} as any);
 
     await orderService.processOrder('test.txt');
 
@@ -195,6 +175,8 @@ describe('Order service tests', () => {
     jest
       .spyOn(orderService, 'readOrderFile')
       .mockResolvedValue(mockReadFileWithLessThan45Lines);
+
+    jest.spyOn(orderService, 'removeFile').mockResolvedValue({} as any);
 
     await orderService.processOrder('test.txt');
 
@@ -247,5 +229,15 @@ describe('Order service tests', () => {
     const result = await orderService.readOrderFile('teste.txt');
 
     expect(result).toEqual(['line1', 'line2', 'line3']);
+  });
+
+  it('should throw an error when repository fails', async () => {
+    const orderService = new OrderService(orderRepositoryMock);
+
+    jest.spyOn(fs, 'unlink').mockResolvedValue({} as any);
+
+    await orderService.removeFile('teste.txt');
+
+    expect(fs.unlink).toHaveBeenCalledTimes(1);
   });
 });
