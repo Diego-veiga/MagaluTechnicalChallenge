@@ -13,7 +13,7 @@ export const connectDatabase = () =>
     .connect(process.env.MONGO_URL!, options)
     .then(res => {
       if (res) {
-        console.log(`Database connection succeffully to testetechmagalu`);
+        console.log(`Database connection succeffully`);
       }
     })
     .catch(err => {
